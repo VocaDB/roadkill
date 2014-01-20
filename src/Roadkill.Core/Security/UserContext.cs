@@ -64,7 +64,6 @@ namespace Roadkill.Core.Security
 						}
 						else
 						{
-							_userService.Logout();
 							return CurrentUser;
 						}
 					}

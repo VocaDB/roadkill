@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Security;
 using Roadkill.Core.Localization;
 using System.Globalization;
 using StructureMap;
@@ -100,8 +101,9 @@ namespace Roadkill.Core.Extensions
 			}
 			else
 			{
+				// VOCADB: changed for VocaDB log in
 				string redirectPath = helper.ViewContext.HttpContext.Request.Path;
-				link = helper.ActionLink(SiteStrings.Navigation_Login, "Login", "User", new { ReturnUrl = redirectPath }, null ).ToString();
+				link = string.Format("<a href='{0}'>{1}</a>", FormsAuthentication.LoginUrl, SiteStrings.Navigation_Login);
 
 				if (controller.SettingsService.GetSiteSettings().AllowUserSignup)
 					link += "&nbsp;/&nbsp;" + helper.ActionLink(SiteStrings.Navigation_Register, "Signup", "User").ToString();

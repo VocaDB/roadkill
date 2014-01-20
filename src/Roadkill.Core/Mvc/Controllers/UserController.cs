@@ -182,7 +182,7 @@ namespace Roadkill.Core.Mvc.Controllers
 				UserViewModel model = null;
 				if (!ApplicationSettings.UseWindowsAuthentication)
 				{
-					RoadkillUser user = UserService.GetUserById(new Guid(Context.CurrentUser));
+					RoadkillUser user = UserService.GetUser(Context.CurrentUser);
 					model = new UserViewModel(user);
 				}
 
