@@ -1,0 +1,5 @@
+*.suo
+src/Roadkill.Web/bin/
+src/Roadkill.Core/obj/
+src/Roadkill.Tests/obj/
+src/Roadkill.Web/obj/
