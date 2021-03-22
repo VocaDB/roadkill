@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using Roadkill.Core.Configuration;
-using Roadkill.Core.Security;
 
 namespace Roadkill.Core.Security
 {
@@ -28,22 +24,13 @@ namespace Roadkill.Core.Security
 
 		public virtual bool IsAdmin(IPrincipal principal)
 		{
-			IIdentity identity = principal.Identity;
-
-			if (!identity.IsAuthenticated)
-			{
-				return false;
-			}
-
-			// An empty admin role name implies everyone is an admin - there's roles at all.
-			if (string.IsNullOrEmpty(_applicationSettings.AdminRoleName))
-				return true;
+			var name = _userService.GetLoggedInUserName(new HttpContextWrapper(HttpContext.Current));
 
 			// For custom IIdentity implementations, check the name (for Windows this should never happen)
-			if (string.IsNullOrEmpty(identity.Name))
+			if (string.IsNullOrEmpty(name))
 				return false;
 
-			if (_userService.IsAdmin(identity.Name))
+			if (_userService.IsAdmin(name))
 				return true;
 			else
 				return false;
@@ -51,22 +38,13 @@ namespace Roadkill.Core.Security
 
 		public virtual bool IsEditor(IPrincipal principal)
 		{
-			IIdentity identity = principal.Identity;
-
-			if (!identity.IsAuthenticated)
-			{
-				return false;
-			}
-
-			// An empty editor role name implies everyone is an editor - there's no page security.
-			if (string.IsNullOrEmpty(_applicationSettings.EditorRoleName))
-				return true;
+			var name = _userService.GetLoggedInUserName(new HttpContextWrapper(HttpContext.Current));
 
 			// Same as IsAdmin - for custom IIdentity implementations, check the name (for Windows this should never happen)
-			if (string.IsNullOrEmpty(identity.Name))
+			if (string.IsNullOrEmpty(name))
 				return false;
 
-			if (_userService.IsAdmin(identity.Name) || _userService.IsEditor(identity.Name))
+			if (_userService.IsAdmin(name) || _userService.IsEditor(name))
 				return true;
 			else
 				return false;
